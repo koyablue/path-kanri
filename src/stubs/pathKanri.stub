@@ -1,0 +1,11 @@
+import pathManager from "path-kanri";
+
+const pathNameAndUriMap = {
+  example: '/example/{exampleId}/{slug}'
+} as const;
+
+// getPath('example', {exampleId: '1', slug: 'abc' })
+// returns '/example/1/abc'
+const { getPath } = pathManager(pathNameAndUriMap);
+
+export default getPath;
