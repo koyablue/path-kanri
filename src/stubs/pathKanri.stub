@@ -1,7 +1,7 @@
 import pathManager from "path-kanri";
 
 const pathNameAndUriMap = {
-  example: '/example/{exampleId}/{slug}'
+  example: '/example/{exampleId}/{slug}',
 } as const;
 
 // getPath('example', {exampleId: '1', slug: 'abc' })

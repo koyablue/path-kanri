@@ -1,13 +1,23 @@
 import * as fs from 'fs';
 
+/**
+ * create file
+ *
+ */
 const init = () => {
-  // const dirName = 'pathKanri';
-  // fs.existsSync(dirName);
-  fs.mkdir('test', (mkdirErr) => {
-    if (mkdirErr) { throw mkdirErr; }
-    fs.writeFile('test/test.txt', 'Hello!', (writeFileErr) => {
-      if (writeFileErr) { throw writeFileErr; }
-      console.log('test/test.txtが作成されました');
-    });
-  });
+  const dirName = 'pathKanri';
+  const dirFullPath = `${__dirname}/${dirName}`;
+
+  const stubFileName = 'pathKanri.stub';
+  const stubFullPath = `${__dirname}/stubs/${stubFileName}`;
+
+  if (!fs.existsSync(dirFullPath)) {
+    fs.mkdirSync(dirFullPath);
+  }
+
+  const indexTs = `${dirFullPath}/index.ts`;
+  fs.writeFileSync(indexTs, '');
+  fs.copyFileSync(stubFullPath, indexTs);
 };
+
+export default init;
