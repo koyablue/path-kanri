@@ -7,7 +7,7 @@
     "build"
   ],
   "bin": {
-    "pathkanri-publish": "bin/index.ts"
+    "pathkanri-publish": "bin/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
