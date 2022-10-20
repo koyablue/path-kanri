@@ -9,7 +9,7 @@ type PathParams = { [key: string]: string | number };
  * @param {TPathNameAndUriMap} pathNameAndUriMap
  * @return {*}
  */
-const pathManager = <TPathNameAndUriMap>(
+const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
   pathNameAndUriMap: TPathNameAndUriMap,
 ) => {
   type PathName = keyof typeof pathNameAndUriMap;
@@ -90,7 +90,22 @@ const pathManager = <TPathNameAndUriMap>(
     return pathToReturn;
   };
 
-  return { getPath } as const;
+  /**
+   * output registered paths and names to console
+   *
+   * @return {*} string
+   */
+  const consoleRegisteredPaths = () => {
+    let str = '';
+    Object.entries(pathNameAndUriMap).forEach((nameAndPath) => {
+      str += `${nameAndPath[0]}: ${nameAndPath[1]}\n`;
+      return str;
+    });
+
+    console.log(str);
+  };
+
+  return { getPath, consoleRegisteredPaths } as const;
 };
 
 export default pathManager;
