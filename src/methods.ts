@@ -1,6 +1,5 @@
-import { ValueOf } from './types/util';
-
-type PathParams = { [key: string]: string | number };
+// types
+import { ValueOf, PathParams } from './types/index';
 
 /**
  *

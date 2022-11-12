@@ -17,6 +17,7 @@
     "build": "tsc --project tsconfig.json",
     "prepare": "npm run build"
   },
+  "types": "src/types/index.ts",
   "keywords": [],
   "author": "koyablue",
   "license": "MIT",
