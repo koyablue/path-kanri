@@ -1,0 +1,10 @@
+{
+  "extends": ".",
+  "compilerOptions": {
+    "module": "ESNext",
+    "outDir": "build/esm",
+    "declaration": true,
+    "declarationMap": true
+  },
+  "include": ["src"]
+}

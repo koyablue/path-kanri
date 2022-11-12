@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "description": "a utility module for manage paths",
   "main": "build/index.ts",
+  "module": "build/esm/index.js",
+  "types": "build/esm/types/index.d.ts",
   "files": [
     "build"
   ],
@@ -14,10 +16,11 @@
     "start": "./node_modules/.bin/ts-node src/index.ts",
     "lint": "eslint ./src/**/*.{tsx,ts}",
     "lint:fix": "eslint --fix './src/**/*.{ts,tsx}'",
-    "build": "tsc --project tsconfig.json",
+    "build": "run-p build:*",
+    "build:common": "tsc",
+    "build:esm": "tsc -p tsconfig.esm.json",
     "prepare": "npm run build"
   },
-  "types": "src/types/index.d.ts",
   "keywords": [],
   "author": "koyablue",
   "license": "MIT",
@@ -33,6 +36,7 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^15.3.0",
     "eslint-plugin-promise": "^6.1.0",
+    "npm-run-all": "^4.1.5",
     "ts-node": "^10.9.1",
     "typescript": "^4.8.4"
   }
