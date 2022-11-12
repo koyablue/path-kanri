@@ -14,7 +14,7 @@
     "start": "./node_modules/.bin/ts-node src/index.ts",
     "lint": "eslint ./src/**/*.{tsx,ts}",
     "lint:fix": "eslint --fix './src/**/*.{ts,tsx}'",
-    "build": "tsc",
+    "build": "tsc --project tsconfig.json",
     "prepare": "npm run build"
   },
   "keywords": [],
