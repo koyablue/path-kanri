@@ -1,5 +1,5 @@
 {
-  "name": "path-kanri",
+  "name": "@koyablue/path-kanri",
   "version": "0.1.0",
   "description": "a utility module for manage paths",
   "main": "build/index.ts",
