@@ -89,22 +89,7 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
     return pathToReturn;
   };
 
-  /**
-   * output registered paths and names to console
-   *
-   * @return {*} string
-   */
-  const consoleRegisteredPaths = () => {
-    let str = '';
-    Object.entries(pathNameAndUriMap).forEach((nameAndPath) => {
-      str += `${nameAndPath[0]}: ${nameAndPath[1]}\n`;
-      return str;
-    });
-
-    console.log(str);
-  };
-
-  return { getPath, consoleRegisteredPaths } as const;
+  return { getPath } as const;
 };
 
 export default pathManager;
