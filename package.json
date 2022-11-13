@@ -19,7 +19,8 @@
     "prebuild": "rimraf dist",
     "build": "run-p build:*",
     "build:common": "tsc",
-    "build:esm": "tsc -p tsconfig.esm.json"
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "prepare": "npm run build"
   },
   "keywords": [],
   "author": "koyablue",
