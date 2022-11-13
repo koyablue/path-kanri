@@ -1,5 +1,7 @@
 import {expect, jest, test, describe, it} from '@jest/globals';
-import pathManager from "../src";
+
+import pathManager from '../src';
+import { missingRequiredParametersMsg, invalidParametersMsg } from '../src/methods/constants';
 
 const nameAndPathMap = {
 	example: '/example/{exampleId}/{slug}',
@@ -18,9 +20,13 @@ describe('pathManager test', () => {
 		expect(getPath('noParams', { param1: 'a', param2: 'b' })).toBe('/no-params')
 	});
 
-	it('getPath() throws error if invalid parameters were provided.', () => {
-		expect(() => getPath('example')).toThrow(`Missing required parameters for ${nameAndPathMap.example}.`);
-		// expect(() => getPath('example', { slug: 'abc' })).toThrow(`Missing required parameters for ${nameAndPathMap.example}.`);
-		expect(() => getPath('example', { param1: 'a', param2: 'b' })).toThrow(`Given parameters are not valid for ${nameAndPathMap.example}.`)
+	it ('getPath() throws Error if required parameters are missing.', () => {
+		expect(() => getPath('example')).toThrow(missingRequiredParametersMsg('example', nameAndPathMap.example));
+
+		expect(() => getPath('example', { slug: 'abc' })).toThrow(missingRequiredParametersMsg('example', nameAndPathMap.example));
+	})
+
+	it('getPath() throws Error if invalid parameters were provided.', () => {
+		expect(() => getPath('example', { param1: 'a', param2: 'b' })).toThrow(invalidParametersMsg('example', nameAndPathMap.example));
 	});
 });
