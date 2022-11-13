@@ -1,4 +1,4 @@
-import { ValueOf } from "./util";
-import { PathParams } from "./path";
+import { ValueOf } from './util';
+import { PathParams } from './path';
 
-export { ValueOf, PathParams }
+export { ValueOf, PathParams };

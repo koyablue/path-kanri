@@ -1,5 +1,8 @@
 // types
-import { ValueOf, PathParams } from './types/index';
+import { ValueOf, PathParams } from '../types/index';
+
+// constants
+import { missingRequiredParametersMsg, invalidParametersMsg } from './constants';
 
 /**
  *
@@ -69,14 +72,12 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
     const rawUriStr = String(rawUri);
     if (!paramNames.length) return rawUriStr;
 
-    if (!params) {
-      throw new Error(`Missing required parameters for ${rawUri}.`);
+    if (!params || Object.keys(params).length !== paramNames.length) {
+      throw new Error(missingRequiredParametersMsg(String(pathName), rawUriStr));
     }
 
-    // TODO: parameter count, show error message with missing params' names
-
     if (!validateParams(paramNames, params)) {
-      throw new Error(`Given parameters are not valid for ${rawUri}.`);
+      throw new Error(invalidParametersMsg(String(pathName), rawUriStr));
     }
 
     // '/example/{exampleId}/{slug}' -> '/example/1/abcd'
