@@ -34,21 +34,23 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
   type ParamNames = ReturnType<typeof getParamNamesFromRawUri>;
 
   /**
-   * validate parameter names and the number of parameters
+   * validate number of parameters and parameter names
    *
-   * @param {ParamNames} paramNames
    * @param {PathParams} params
-   * @return {*}  {boolean}
+   * @param {ParamNames} paramNames
+   * @param {PathName} pathName
+   * @param {TPathNameAndUriMap[keyof TPathNameAndUriMap]} rawUri
    */
-  const validateParams = (
-    paramNames: ParamNames,
-    params: PathParams,
-  ): boolean => {
+  const validateParams = (params: PathParams, paramNames: ParamNames, pathName: PathName, rawUri: TPathNameAndUriMap[keyof TPathNameAndUriMap]) => {
     const paramsKeys = Object.keys(params);
-    return (
-      paramNames.length === paramsKeys.length
-      && paramsKeys.every((paramKey) => paramNames.includes(paramKey))
-    );
+
+    if (paramsKeys.length !== paramNames.length) {
+      throw new Error(missingRequiredParametersMsg(String(pathName), String(rawUri)));
+    }
+
+    if (!paramsKeys.every((paramKey) => paramNames.includes(paramKey))) {
+      throw new Error(invalidParametersMsg(String(pathName), String(rawUri)));
+    }
   };
 
   /**
@@ -72,13 +74,11 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
     const rawUriStr = String(rawUri);
     if (!paramNames.length) return rawUriStr;
 
-    if (!params || Object.keys(params).length !== paramNames.length) {
+    if (!params) {
       throw new Error(missingRequiredParametersMsg(String(pathName), rawUriStr));
     }
 
-    if (!validateParams(paramNames, params)) {
-      throw new Error(invalidParametersMsg(String(pathName), rawUriStr));
-    }
+    validateParams(params, paramNames, pathName, rawUri);
 
     // '/example/{exampleId}/{slug}' -> '/example/1/abcd'
     let pathToReturn = rawUriStr;
