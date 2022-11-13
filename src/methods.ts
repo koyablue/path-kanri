@@ -73,6 +73,8 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
       throw new Error(`Missing required parameters for ${rawUri}.`);
     }
 
+    // TODO: parameter count, show error message with missing params' names
+
     if (!validateParams(paramNames, params)) {
       throw new Error(`Given parameters are not valid for ${rawUri}.`);
     }
