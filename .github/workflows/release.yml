@@ -1,0 +1,34 @@
+name: CICD
+
+# Triggers when pushed to master branch
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '!*'
+
+jobs:
+  release:
+    name: release-npm-package
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: setup-node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: install-dependencies
+        run: npm ci
+
+      - name: 'run test'
+        run: 'npm test'
+
+      # Publish to npm
+      - name: publish-to-npm
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
