@@ -20,7 +20,10 @@
     "build": "run-p build:*",
     "build:common": "tsc",
     "build:esm": "tsc -p tsconfig.esm.json",
-    "prepare": "npm run build"
+    "prepare": "simple-git-hooks"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npm test"
   },
   "keywords": [],
   "author": "koyablue",
