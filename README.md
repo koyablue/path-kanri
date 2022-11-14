@@ -59,10 +59,10 @@ import pathManager from 'path-kanri';
 // name: '/path/{parameterName1}/{parameterName2}'
 const { getPath } = pathManager({
   example: '/example/{exampleId}/{slug}',
-	users: '/users',
-	userProfile: '/users/{userId}',
-	userPosts: '/users/{userId}/posts',
-	userPost: '/users/{userId}/posts/{postId}',
+  users: '/users',
+  userProfile: '/users/{userId}',
+  userPosts: '/users/{userId}/posts',
+  userPost: '/users/{userId}/posts/{postId}',
 });
 
 export { getPath }
