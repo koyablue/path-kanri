@@ -13,14 +13,18 @@ const { getPath } = pathManager(nameAndPathMap)
 describe('pathManager test', () => {
 
 	it('getPath() can get a path by name and returns it with given parameters.', () => {
-		expect(getPath('example', {exampleId: '1', slug: 'abc'})).toBe('/example/1/abc')
+		expect(getPath('example', { exampleId: '1', slug: 'abc' })).toBe('/example/1/abc')
 	});
 
 	it('getPath() returns a valid path if unnecessary parameters were provided.', () => {
 		expect(getPath('noParams', { param1: 'a', param2: 'b' })).toBe('/no-params')
 	});
 
-	it ('getPath() throws Error if required parameters are missing.', () => {
+	it('getPath() returns the path with query parameters if an object is provided as 3rd argument.', () => {
+		expect(getPath('example', { exampleId: '1', slug: 'abc' }, { page: '1', type: 'fire' })).toBe('/example/1/abc/?page=1&type=fire');
+	});
+
+	it('getPath() throws Error if required parameters are missing.', () => {
 		expect(() => getPath('example')).toThrow(missingRequiredParametersMsg('example', nameAndPathMap.example));
 
 		expect(() => getPath('example', { slug: 'abc' })).toThrow(missingRequiredParametersMsg('example', nameAndPathMap.example));
