@@ -8,9 +8,6 @@
   "files": [
     "dist"
   ],
-  "bin": {
-    "pathkanri-publish": "dist/bin/index.js"
-  },
   "scripts": {
     "test": "jest --verbose",
     "start": "./node_modules/.bin/ts-node src/index.ts",
