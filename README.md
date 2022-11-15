@@ -11,7 +11,14 @@ By using Path-Kanri, you can
 
 ---
 
-tech stack here
+## Built with
+
+![](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white)
+![](https://img.shields.io/badge/-Node.js-339933?logo=node.js&logoColor=white)
+![](https://img.shields.io/badge/-ESLint-4B32C3?logo=eslint&logoColor=white)
+![](https://img.shields.io/badge/-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white)
+![](https://img.shields.io/badge/-Jest-C21325?logo=jest&logoColor=white)
+![](https://img.shields.io/badge/-npm-CB3837?logo=npm&logoColor=white)
 
 ---
 
@@ -76,35 +83,6 @@ getPath('example', { exampleId: 1, slug: 'abc' })
 // returns '/example/1/abc'
 ```
 
-### Prerequisities
-
-
-## Built With
-
-* Dropwizard - Bla bla bla
-* Maven - Maybe
-* Atom - ergaerga
-
-## Contributing
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **John Doe** - *Initial work* - [JohnDoe](https://github.com/JohnDoe)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
 ## License
 
-This project is licensed under the **BSD License** - see the [LICENSE.md](LICENSE.md) file for details.
-
-## Acknowledgments
-
-* Hat tip to anyone who's code was used
-* Inspiration
-* etc
+This project is licensed under the **MIT License**
