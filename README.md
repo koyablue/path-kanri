@@ -18,33 +18,6 @@ By using Path-Kanri, you can
 ![](https://img.shields.io/badge/-Jest-C21325?logo=jest&logoColor=white)
 ![](https://img.shields.io/badge/-npm-CB3837?logo=npm&logoColor=white)
 
-## Motivation
-In front-end coding I often encounter hard coded paths like this.
-```typescript
-import { useRouter } from 'next/router'
-
-const ExampleComponent = () => {
-  const router = useRouter()
-
-  const randomFunc = () => {
-    // do something
-    router.push(`/example/${exampleId}/${slug}`) // <- THIS!!
-  }
-
-  return(
-    <div>
-    </div>
-  )
-}
-```
-
-Hard coded paths are magic numbers so they should be avoided.  
-Laravel(PHP framework) has a very useful function to solve this kind of problem. You can name URI and get it by the name by route() helper function like this.
-```php
-route('route.name', ['param1' => 1, 'param2' => 2])
-```
-I was inspired by this cool feature and made Path-Kanri.
-
 ## Installation
 ```
 npm install path-kanri
@@ -78,6 +51,33 @@ import { getPath } from './lib/pathManager'
 getPath('example', { exampleId: 1, slug: 'abc' })
 // returns '/example/1/abc'
 ```
+
+## Motivation
+In front-end coding I often encounter hard coded paths like this.
+```typescript
+import { useRouter } from 'next/router'
+
+const ExampleComponent = () => {
+  const router = useRouter()
+
+  const randomFunc = () => {
+    // do something
+    router.push(`/example/${exampleId}/${slug}`) // <- THIS!!
+  }
+
+  return(
+    <div>
+    </div>
+  )
+}
+```
+
+Hard coded paths are magic numbers so they should be avoided.  
+Laravel(PHP framework) has a very useful function to solve this kind of problem. You can name URI and get it by the name by route() helper function like this.
+```php
+route('route.name', ['param1' => 1, 'param2' => 2])
+```
+I was inspired by this cool feature and made Path-Kanri.
 
 ## License
 
