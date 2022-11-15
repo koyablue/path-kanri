@@ -1,6 +1,6 @@
 {
   "name": "path-kanri",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A utility module for managing paths.",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
@@ -17,7 +17,7 @@
     "build": "run-p build:*",
     "build:common": "tsc",
     "build:esm": "tsc -p tsconfig.esm.json",
-    "prepare": "simple-git-hooks"
+    "prepare": "npm run build"
   },
   "simple-git-hooks": {
     "pre-commit": "npm test"
