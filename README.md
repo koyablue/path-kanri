@@ -9,8 +9,6 @@ By using Path-Kanri, you can
 
 (by the way, kanri means management in Japanese.)
 
----
-
 ## Built with
 
 ![](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white)
@@ -19,8 +17,6 @@ By using Path-Kanri, you can
 ![](https://img.shields.io/badge/-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white)
 ![](https://img.shields.io/badge/-Jest-C21325?logo=jest&logoColor=white)
 ![](https://img.shields.io/badge/-npm-CB3837?logo=npm&logoColor=white)
-
----
 
 ## Motivation
 In front-end coding I often encounter hard coded paths like this.
