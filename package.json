@@ -25,7 +25,22 @@
   "simple-git-hooks": {
     "pre-commit": "npm test"
   },
-  "keywords": [],
+  "keywords": [
+    "typescript",
+    "react",
+    "nextjs",
+    "vue",
+    "nuxtjs",
+    "path",
+    "paths",
+    "manage",
+    "management",
+    "routing",
+    "route",
+    "page",
+    "pages",
+    "link"
+  ],
   "author": "koyablue",
   "license": "MIT",
   "repository": "https://github.com/koyablue/path-kanri",
