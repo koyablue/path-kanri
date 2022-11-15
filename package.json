@@ -19,9 +19,6 @@
     "build:esm": "tsc -p tsconfig.esm.json",
     "prepare": "npm run build"
   },
-  "simple-git-hooks": {
-    "pre-commit": "npm test"
-  },
   "keywords": [
     "typescript",
     "react",
