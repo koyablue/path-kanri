@@ -45,11 +45,22 @@ export { getPath }
 ```
 
 ## Usage
+
+Import.
 ```typescript
 import { getPath } from './lib/pathManager'
+```
 
+Get a registered path by name.
+```typescript
 getPath('example', { exampleId: 1, slug: 'abc' })
 // returns '/example/1/abc'
+```
+
+With query parameters.
+```typescript
+getPath('example', { exampleId: 1, slug: 'abc' }, { page: '1', type: 'fire' })
+// returns '/example/1/abc/?page=1&type=fire'
 ```
 
 ## Motivation
@@ -73,7 +84,7 @@ const ExampleComponent = () => {
 ```
 
 Hard coded paths are magic numbers so they should be avoided.  
-Laravel(PHP framework) has a very useful function to solve this kind of problem. You can name URI and get it by the name by route() helper function like this.
+Laravel(PHP framework) has a very useful function to solve this kind of problem. You can name URI and get it by the name with route() helper function like this.
 ```php
 route('route.name', ['param1' => 1, 'param2' => 2])
 ```
@@ -81,4 +92,4 @@ I was inspired by this cool feature and made Path-Kanri.
 
 ## License
 
-This project is licensed under the **MIT License**
+This project is licensed under the [**MIT License**](https://github.com/koyablue/path-kanri/blob/main/LICENSE).
