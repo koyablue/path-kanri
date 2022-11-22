@@ -1,6 +1,6 @@
 {
   "name": "path-kanri",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "A utility module for managing paths.",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
@@ -42,7 +42,7 @@
     "@babel/plugin-transform-modules-commonjs": "^7.19.6",
     "@babel/preset-env": "^7.20.2",
     "@jest/types": "^29.3.1",
-    "@types/jest": "^29.2.2",
+    "@types/jest": "^29.2.3",
     "@types/node": "^18.11.2",
     "@typescript-eslint/eslint-plugin": "^5.42.1",
     "@typescript-eslint/parser": "^5.42.1",
@@ -69,7 +69,6 @@
   "transform": {
     "\\.ts$": "<rootDir>/node_modules/babel-jest"
   },
-  "dependencies": {},
   "engines": {
     "node": ">=14"
   }

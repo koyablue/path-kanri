@@ -85,7 +85,7 @@ const ExampleComponent = () => {
 ```
 
 Hard coded paths are generally considered to be magic numbers so they should be avoided.  
-Laravel(PHP framework) has a very useful built-in function to solve this kind of problem. You can name URIs and get them by their name with route() function like this.
+Laravel(PHP framework) has a very useful built-in function to solve this kind of problem. You can name URIs and get them by their names with route() function like this.
 ```php
 route('route.name', ['param1' => 1, 'param2' => 2])
 ```
