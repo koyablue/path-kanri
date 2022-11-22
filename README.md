@@ -4,10 +4,11 @@
 Path-Kanri is a utility module for managing paths.  
 
 By using Path-Kanri, you can
-- register paths with names and get paths by names.
-- avoid hard coding paths.
+- register paths with names
+- get paths by names
+- avoid hard coding paths
 
-(by the way, kanri means management in Japanese.)
+(By the way, kanri means management in Japanese.)
 
 ## Built with
 
@@ -26,7 +27,7 @@ npm install path-kanri
 ## Getting Started
 - import pathManager from 'path-kanri'
 - provide object to pathManager
-	- name as keys, paths as values
+	- names as keys, paths as values
 	- enclose parameters in braces
 
 ```typescript
@@ -51,7 +52,7 @@ Import.
 import { getPath } from './lib/pathManager'
 ```
 
-Get a registered path by name.
+Get a registered path by its name.
 ```typescript
 getPath('example', { exampleId: 1, slug: 'abc' })
 // returns '/example/1/abc'
@@ -83,12 +84,12 @@ const ExampleComponent = () => {
 }
 ```
 
-Hard coded paths are magic numbers so they should be avoided.  
-Laravel(PHP framework) has a very useful function to solve this kind of problem. You can name URI and get it by the name with route() helper function like this.
+Hard coded paths are generally considered to be magic numbers so they should be avoided.  
+Laravel(PHP framework) has a very useful built-in function to solve this kind of problem. You can name URIs and get them by their name with route() function like this.
 ```php
 route('route.name', ['param1' => 1, 'param2' => 2])
 ```
-I was inspired by this cool feature and made Path-Kanri.
+I was inspired by this cool feature and decided to make Path-Kanri.
 
 ## License
 
