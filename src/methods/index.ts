@@ -41,7 +41,12 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
    * @param {PathName} pathName
    * @param {TPathNameAndUriMap[keyof TPathNameAndUriMap]} rawUri
    */
-  const validateParams = (params: PathParams, paramNames: ParamNames, pathName: PathName, rawUri: TPathNameAndUriMap[keyof TPathNameAndUriMap]) => {
+  const validateParams = (
+    params: PathParams,
+    paramNames: ParamNames,
+    pathName: PathName,
+    rawUri: TPathNameAndUriMap[keyof TPathNameAndUriMap],
+  ) => {
     const paramsKeys = Object.keys(params);
 
     if (paramsKeys.length !== paramNames.length) {
@@ -60,7 +65,9 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
    * @param {Record<string, string>} paramsObj
    * @return {*}  {string}
    */
-  const generateQueryParamsStr = (paramsObj: Record<string, string>): string => new URLSearchParams(paramsObj).toString()
+  const generateQueryParamsStr = (paramsObj: Record<string, string>): string => (
+    new URLSearchParams(paramsObj).toString()
+  );
 
   /**
    * get path
@@ -74,7 +81,7 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
   const getPath = (
     pathName: PathName,
     params?: PathParams,
-    queryParams?: Record<string, string>
+    queryParams?: Record<string, string>,
   ): string => {
     // '/example/{exampleId}/{slug}'
     const rawUri = pathNameAndUriMap[pathName];
@@ -101,7 +108,7 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
 
     if (queryParams) {
       // '/example/1/abcd/?page=1&type=fire'
-      return `${pathToReturn}/?${generateQueryParamsStr(queryParams)}`
+      return `${pathToReturn}/?${generateQueryParamsStr(queryParams)}`;
     }
 
     return pathToReturn;
