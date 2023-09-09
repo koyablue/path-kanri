@@ -133,10 +133,7 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
     // '/example/{exampleId}/{slug}' -> '/example/1/abcd'
     let pathToReturn = rawUriStr;
     paramNames.forEach((paramName) => {
-      pathToReturn = pathToReturn.replace(
-        `{${paramName}}`,
-        String(params[paramName]),
-      );
+      pathToReturn = pathToReturn.replace(`{${paramName}}`, String(params[paramName]));
     });
 
     // ex) 'https://example.com/example/1/abcd/?page=1&type=fire'
