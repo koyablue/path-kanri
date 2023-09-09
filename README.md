@@ -42,26 +42,91 @@ const { getPath } = pathManager({
   userPost: '/users/{userId}/posts/{postId}',
 });
 
-export { getPath }
+export { getPath };
 ```
+### With base url
+You can also provide a base url as the second argument.
+
+```typescript
+const { getPath, getFullPath } = pathManager({
+  example: '/example/{exampleId}/{slug}',
+  users: '/users',
+  userProfile: '/users/{userId}',
+  userPosts: '/users/{userId}/posts',
+  userPost: '/users/{userId}/posts/{postId}',
+}, 'https://example.com');
+
+export { getPath, getFullPath };
+```
+In this case, getFullPath returns a path with the base url.
 
 ## Usage
 
 Import.
 ```typescript
-import { getPath } from './lib/pathManager'
+import { getPath } from './lib/pathManager';
 ```
 
 Get a registered path by its name.
 ```typescript
-getPath('example', { exampleId: 1, slug: 'abc' })
+getPath('example', { exampleId: 1, slug: 'abc' });
 // returns '/example/1/abc'
 ```
 
 With query parameters.
 ```typescript
-getPath('example', { exampleId: 1, slug: 'abc' }, { page: '1', type: 'fire' })
+getPath('example', { exampleId: 1, slug: 'abc' }, { page: '1', type: 'fire' });
 // returns '/example/1/abc/?page=1&type=fire'
+```
+
+With the base url.
+```typescript
+// 'https://example.com' is provided as the second argument of pathManager
+
+getFullPath('example', { exampleId: 1, slug: 'abc' }, { page: '1', type: 'fire' });
+// returns 'https://example.com/example/1/abc/?page=1&type=fire'
+```
+
+## API
+### pathManager(pathNameAndUriMap, baseUrl)
+Register paths and a base url.  
+baseUrl is optional.
+```typescript
+const { getPath, getFullPath } = pathManager({
+  example: '/example/{exampleId}/{slug}',
+  users: '/users',
+  userProfile: '/users/{userId}',
+  userPosts: '/users/{userId}/posts',
+  userPost: '/users/{userId}/posts/{postId}',
+}, 'https://example.com');
+```
+
+---
+
+### getPath(pathName, params, queryParams)
+Get a path by its name.
+```typescript
+getPath('users');
+// '/users'
+
+// With path parameters
+getPath('example', { exampleId: 1, slug: 'abc' });
+// '/example/1/abc'
+
+// With query parameters
+getPath('example', { exampleId: 1, slug: 'abc' }, { page: '1', type: 'fire' });
+// '/example/1/abc/?page=1&type=fire'
+```
+
+---
+
+### getFullPath(pathName, params, queryParams)
+Get a full path by its name.  
+Returns a path without the base url if the base url is not registered.
+```typescript
+getFullPath('example', { exampleId: 1, slug: 'abc' }, { page: '1', type: 'fire' });
+// 'https://example.com/example/1/abc/?page=1&type=fire'
+// If the base url isn't registered: '/example/1/abc/?page=1&type=fire'
 ```
 
 ## Motivation
