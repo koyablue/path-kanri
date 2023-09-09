@@ -8,17 +8,19 @@ import { missingRequiredParametersMsg, invalidParametersMsg } from './constants'
  *
  *
  * @template TPathNameAndUriMap
- * @param {TPathNameAndUriMap} pathNameAndUriMap
- * @return {*}
+ * @param {TPathNameAndUriMap} pathNameAndUriMap ex) { name: '/example/{a}/{b}', ... }
+ * @param {string} [baseUrl] ex) 'https://api.example.com'
+ * @return {*} functions
  */
 const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
   pathNameAndUriMap: TPathNameAndUriMap,
+  baseUrl: string = '',
 ) => {
   type PathName = keyof typeof pathNameAndUriMap;
   type Uri = ValueOf<typeof pathNameAndUriMap>;
 
   /**
-   * returns array of parameter name
+   * Returns array of parameter name
    * ex) getParamNamesFromRawUri('/example/{exampleId}/{slug}') -> ['exampleId', 'slug']
    *
    * @param {Uri} rawUri
@@ -34,7 +36,7 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
   type ParamNames = ReturnType<typeof getParamNamesFromRawUri>;
 
   /**
-   * validate number of parameters and parameter names
+   * Validate number of parameters and parameter names
    *
    * @param {PathParams} params
    * @param {ParamNames} paramNames
@@ -59,7 +61,7 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
   };
 
   /**
-   * generate query params string from object
+   * Generate query params string from object
    * ex) generateQueryParamsStr({ page: '1', type: 'fire' }) => 'page=1&type=fire'
    *
    * @param {Record<string, string>} paramsObj
@@ -70,7 +72,35 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
   );
 
   /**
-   * get path
+   * Returns full path
+   *
+   * @param {string} path
+   * @return {*}  {string}
+   */
+  const withBaseUrl = (path: string): string => `${baseUrl}${path}`;
+
+  /**
+   * Returns a path with query parameters
+   *
+   * @param {string} path
+   * @param {Record<string, string>} queryParams
+   * @return {*}  {string}
+   */
+  const withQueryParams = (path: string, queryParams: Record<string, string>): string => `${path}/?${generateQueryParamsStr(queryParams)}`;
+
+  /**
+   * Returns a path with the base url and query parameters
+   *
+   * @param {string} path
+   * @param {Record<string, string>} queryParams
+   * @return {*}  {string}
+   */
+  const withBaseUrlAndQueryParams = (path: string, queryParams: Record<string, string>): string => (
+    withBaseUrl(withQueryParams(path, queryParams))
+  );
+
+  /**
+   * Get path
    *
    * getActualUri('example', { exampleId: 1, slug: 'abcd' }) -> '/example/1/abcd'
    *
@@ -83,20 +113,23 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
     params?: PathParams,
     queryParams?: Record<string, string>,
   ): string => {
-    // '/example/{exampleId}/{slug}'
-    const rawUri = pathNameAndUriMap[pathName];
+    const rawUri = pathNameAndUriMap[pathName]; // ex) '/example/{exampleId}/{slug}'
 
-    // ['exampleId', 'slug']
-    const paramNames = getParamNamesFromRawUri(rawUri);
-    const rawUriStr = String(rawUri);
-    if (!paramNames.length) return rawUriStr;
+    const paramNames = getParamNamesFromRawUri(rawUri); // ex) ['exampleId', 'slug']
+    const rawUriStr = String(rawUri); // This is just for type conversion
 
+    // Return if the path doesn't contain any parameter placeholder
+    if (!paramNames.length) return withBaseUrl(rawUriStr);
+
+    // The path contains parameter placeholders but params doesn't provided as the 2nd argument
     if (!params) {
       throw new Error(missingRequiredParametersMsg(String(pathName), rawUriStr));
     }
 
+    // Throw error if the params are invalid
     validateParams(params, paramNames, pathName, rawUri);
 
+    // Fill the parameter placeholder with params
     // '/example/{exampleId}/{slug}' -> '/example/1/abcd'
     let pathToReturn = rawUriStr;
     paramNames.forEach((paramName) => {
@@ -106,12 +139,10 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
       );
     });
 
-    if (queryParams) {
-      // '/example/1/abcd/?page=1&type=fire'
-      return `${pathToReturn}/?${generateQueryParamsStr(queryParams)}`;
-    }
+    // ex) 'https://example.com/example/1/abcd/?page=1&type=fire'
+    if (queryParams) return withBaseUrlAndQueryParams(pathToReturn, queryParams);
 
-    return pathToReturn;
+    return withBaseUrl(pathToReturn);
   };
 
   return { getPath } as const;

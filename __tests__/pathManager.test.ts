@@ -10,7 +10,7 @@ const nameAndPathMap = {
 
 const { getPath } = pathManager(nameAndPathMap);
 
-describe('pathManager test', () => {
+describe('pathManager without the base url test', () => {
   it('getPath() can get a path by name and returns it with given parameters.', () => {
     expect(getPath('example', { exampleId: '1', slug: 'abc' })).toBe('/example/1/abc');
   });
@@ -31,5 +31,13 @@ describe('pathManager test', () => {
 
   it('getPath() throws Error if invalid parameters were provided.', () => {
     expect(() => getPath('example', { param1: 'a', param2: 'b' })).toThrow(invalidParametersMsg('example', nameAndPathMap.example));
+  });
+});
+
+const baseUrl = 'http://example.com';
+const { getPath: getPathWithBaseUrl } = pathManager(nameAndPathMap, baseUrl);
+describe('pathManager with the base url test', () => {
+  it('getPath() returns a path with the base url if the base url is provided.', () => {
+    expect(getPathWithBaseUrl('example', { exampleId: '1', slug: 'abc' })).toBe(`${baseUrl}/example/1/abc`);
   });
 });
