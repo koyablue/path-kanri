@@ -89,17 +89,6 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
   const withQueryParams = (path: string, queryParams: Record<string, string>): string => `${path}/?${generateQueryParamsStr(queryParams)}`;
 
   /**
-   * Returns a path with the base url and query parameters
-   *
-   * @param {string} path
-   * @param {Record<string, string>} queryParams
-   * @return {*}  {string}
-   */
-  const withBaseUrlAndQueryParams = (path: string, queryParams: Record<string, string>): string => (
-    withBaseUrl(withQueryParams(path, queryParams))
-  );
-
-  /**
    * Get path
    *
    * getActualUri('example', { exampleId: 1, slug: 'abcd' }) -> '/example/1/abcd'
@@ -137,12 +126,18 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
     });
 
     // ex) 'https://example.com/example/1/abcd/?page=1&type=fire'
-    if (queryParams) return withBaseUrlAndQueryParams(pathToReturn, queryParams);
+    if (queryParams) return withQueryParams(pathToReturn, queryParams);
 
-    return withBaseUrl(pathToReturn);
+    return pathToReturn;
   };
 
-  return { getPath } as const;
+  const getFullPath = (
+    pathName: PathName,
+    params?: PathParams,
+    queryParams?: Record<string, string>,
+  ): string => withBaseUrl(getPath(pathName, params, queryParams));
+
+  return { getPath, getFullPath } as const;
 };
 
 export default pathManager;

@@ -8,7 +8,7 @@ const nameAndPathMap = {
   noParams: '/no-params',
 };
 
-const { getPath } = pathManager(nameAndPathMap);
+const { getPath, getFullPath } = pathManager(nameAndPathMap);
 
 describe('pathManager without the base url test', () => {
   it('getPath() can get a path by name and returns it with given parameters.', () => {
@@ -32,12 +32,24 @@ describe('pathManager without the base url test', () => {
   it('getPath() throws Error if invalid parameters were provided.', () => {
     expect(() => getPath('example', { param1: 'a', param2: 'b' })).toThrow(invalidParametersMsg('example', nameAndPathMap.example));
   });
+
+  it('getFullPath() returns the path without base url', () => {
+    expect(getFullPath('example', { exampleId: '1', slug: 'abc' }, { page: '1', type: 'fire' })).toBe('/example/1/abc/?page=1&type=fire');
+  });
 });
 
 const baseUrl = 'http://example.com';
-const { getPath: getPathWithBaseUrl } = pathManager(nameAndPathMap, baseUrl);
+const {
+  getPath: getPathWithBaseUrl,
+  getFullPath: getFullPathWithBaseUrl,
+} = pathManager(nameAndPathMap, baseUrl);
+
 describe('pathManager with the base url test', () => {
-  it('getPath() returns a path with the base url if the base url is provided.', () => {
-    expect(getPathWithBaseUrl('example', { exampleId: '1', slug: 'abc' })).toBe(`${baseUrl}/example/1/abc`);
+  it('getPath() returns a path without the base url.', () => {
+    expect(getPathWithBaseUrl('example', { exampleId: '1', slug: 'abc' }, { page: '1', type: 'fire' })).toBe('/example/1/abc/?page=1&type=fire');
+  });
+
+  it('getFullPath() returns a path with the base url.', () => {
+    expect(getFullPathWithBaseUrl('example', { exampleId: '1', slug: 'abc' }, { page: '1', type: 'fire' })).toBe(`${baseUrl}/example/1/abc/?page=1&type=fire`);
   });
 });
