@@ -2,9 +2,8 @@
   "name": "path-kanri",
   "version": "0.1.9",
   "description": "A utility module for managing paths.",
-  "main": "dist/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/esm/index.d.ts",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "files": [
     "dist"
   ],
@@ -16,7 +15,7 @@
     "prebuild": "rimraf dist",
     "build": "run-p build:*",
     "build:common": "tsc",
-    "build:esm": "tsc -p tsconfig.esm.json",
+
     "prepare": "npm run build"
   },
   "keywords": [
