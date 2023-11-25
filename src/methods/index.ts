@@ -84,9 +84,15 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
    *
    * @param {string} path
    * @param {Record<string, string>} queryParams
-   * @return {*}  {string}
+   * @return {string} ex) isQueryParamsEmpty ? '/example' : '/example?page=1&limit=5'
    */
-  const withQueryParams = (path: string, queryParams: Record<string, string>): string => `${path}/?${generateQueryParamsStr(queryParams)}`;
+  const withQueryParams = (path: string, queryParams: Record<string, string>): string => {
+    const isQueryParamsEmpty = Object.keys(queryParams).length === 0;
+
+    return isQueryParamsEmpty
+      ? path
+      : `${path}/?${generateQueryParamsStr(queryParams)}`;
+  };
 
   /**
    * Get path
@@ -108,7 +114,11 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
     const rawUriStr = String(rawUri); // This is just for type conversion
 
     // Return if the path doesn't contain any parameter placeholder
-    if (!paramNames.length) return withBaseUrl(rawUriStr);
+    if (!paramNames.length) {
+      return queryParams
+        ? withQueryParams(rawUriStr, queryParams)
+        : withBaseUrl(rawUriStr);
+    }
 
     // The path contains parameter placeholders but params doesn't provided as the 2nd argument
     if (!params) {

@@ -15,18 +15,28 @@ describe('pathManager without the base url test', () => {
     expect(getPath('example', { exampleId: '1', slug: 'abc' })).toBe('/example/1/abc');
   });
 
-  it('getPath() returns a valid path if unnecessary parameters were provided.', () => {
+  it('getPath() returns a valid path if unnecessary route parameters are provided.', () => {
     expect(getPath('noParams', { param1: 'a', param2: 'b' })).toBe('/no-params');
+  });
+
+  it('getPath() returns a valid path if unnecessary route parameters and empty query params object are provided.', () => {
+    expect(getPath('noParams', { param1: 'a', param2: 'b' }, {})).toBe('/no-params');
   });
 
   it('getPath() returns the path with query parameters if an object is provided as 3rd argument.', () => {
     expect(getPath('example', { exampleId: '1', slug: 'abc' }, { page: '1', type: 'fire' })).toBe('/example/1/abc/?page=1&type=fire');
   });
 
+  it('getPath() returns the path with query parameters if an empty object is provided as the 2nd argument and an object of query parameters is provided as the 3rd argument.', () => {
+    expect(getPath('noParams', {}, { page: '1', type: 'fire' })).toBe('/no-params/?page=1&type=fire');
+  });
+
   it('getPath() throws Error if required parameters are missing.', () => {
     expect(() => getPath('example')).toThrow(missingRequiredParametersMsg('example', nameAndPathMap.example));
 
     expect(() => getPath('example', { slug: 'abc' })).toThrow(missingRequiredParametersMsg('example', nameAndPathMap.example));
+
+    expect(() => getPath('example', {}, { page: '1', type: 'fire' })).toThrow(missingRequiredParametersMsg('example', nameAndPathMap.example));
   });
 
   it('getPath() throws Error if invalid parameters were provided.', () => {
