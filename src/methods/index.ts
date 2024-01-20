@@ -4,18 +4,31 @@ import { ValueOf, PathParams } from '../types/index';
 // constants
 import { missingRequiredParametersMsg, invalidParametersMsg } from './constants';
 
+export type PathManagerReturnType<TPathNameAndUriMap> = {
+  readonly getPath: (
+    pathName: keyof TPathNameAndUriMap,
+    params?: PathParams,
+    queryParams?: Record<string, string>,
+  ) => string;
+  readonly getFullPath: (
+    pathName: keyof TPathNameAndUriMap,
+    params?: PathParams,
+    queryParams?: Record<string, string>
+  ) => string;
+};
+
 /**
  *
  *
  * @template TPathNameAndUriMap
  * @param {TPathNameAndUriMap} pathNameAndUriMap ex) { name: '/example/{a}/{b}', ... }
- * @param {string} [baseUrl] ex) 'https://api.example.com'
- * @return {*} functions
+ * @param {string} [baseUrl=''] ex) 'https://api.example.com'
+ * @return {PathManagerReturnType<TPathNameAndUriMap>}
  */
 const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
   pathNameAndUriMap: TPathNameAndUriMap,
   baseUrl: string = '',
-) => {
+): PathManagerReturnType<TPathNameAndUriMap> => {
   type PathName = keyof typeof pathNameAndUriMap;
   type Uri = ValueOf<typeof pathNameAndUriMap>;
 
