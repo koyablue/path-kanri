@@ -117,7 +117,7 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
     if (!paramNames.length) {
       return queryParams
         ? withQueryParams(rawUriStr, queryParams)
-        : withBaseUrl(rawUriStr);
+        : rawUriStr;
     }
 
     // The path contains parameter placeholders but params doesn't provided as the 2nd argument
