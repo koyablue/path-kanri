@@ -4,18 +4,77 @@ import { ValueOf, PathParams } from '../types/index';
 // constants
 import { missingRequiredParametersMsg, invalidParametersMsg } from './constants';
 
+export type PathManagerReturnType<TPathNameAndUriMap> = {
+  readonly getPath: (
+    pathName: keyof TPathNameAndUriMap,
+    params?: PathParams,
+    queryParams?: Record<string, string>,
+  ) => string;
+  readonly getFullPath: (
+    pathName: keyof TPathNameAndUriMap,
+    params?: PathParams,
+    queryParams?: Record<string, string>
+  ) => string;
+};
+
 /**
+ * Creates a path manager for handling URL paths and parameters.
  *
+ * The pathManager function takes a mapping of path names to URI templates and an optional base URL.
+ * It returns an object with two methods, getPath and getFullPath, which are used to generate URLs
+ * with or without the base URL respectively.
  *
  * @template TPathNameAndUriMap
- * @param {TPathNameAndUriMap} pathNameAndUriMap ex) { name: '/example/{a}/{b}', ... }
- * @param {string} [baseUrl] ex) 'https://api.example.com'
- * @return {*} functions
+ *  - A mapping type where keys are path names and values are URI templates.
+ *
+ * @param {TPathNameAndUriMap} pathNameAndUriMap
+ * - An object mapping path names to URI templates.
+ * ex) { name: '/example/{a}/{b}', ... }
+ *
+ * @param {string} [baseUrl='']
+ * - An optional base URL to prepend to paths.
+ * ex) 'https://api.example.com'
+ *
+ * @return {PathManagerReturnType<TPathNameAndUriMap>}
+ * - An object with getPath and getFullPath methods.
+ *
+ *
+ * Usage Example:
+ *
+ * const paths = {
+ *   example: '/example',
+ *   exampleWithParam: '/another-example/{slug}/{id}',
+ * };
+ *
+ * - Create a path manager with these paths and an optional base URL
+ * const { getPath, getFullPath } = pathManager(paths, 'https://api.example.com');
+ *
+ *
+ * - Generate a path using the 'example' path name
+ * getPath('example');
+ * Returns: '/example'
+ *
+ * getFullPath('example');
+ * Returns: 'https://api.example.com/example'
+ *
+ *
+ * - Generate a path using the 'exampleWithParam' path name and parameters
+ * getPath('exampleWithParam', {slug: 'users', id: '1'});
+ * Returns: '/another-example/users/1'
+ *
+ *
+ * - Generate a path with query parameters
+ * getPath('example', {}, {page: '1', limit: '5'});
+ * Returns: '/example/?page=1&limit=5'
+ *
+ * getFullPath('exampleWithParam', {slug: 'users', id: '1'}, {page: '1', limit: '5'});
+ * Returns 'https://api.example.com/another-example/users/1/?page=1&limit=5'
+ *
  */
 const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
   pathNameAndUriMap: TPathNameAndUriMap,
   baseUrl: string = '',
-) => {
+): PathManagerReturnType<TPathNameAndUriMap> => {
   type PathName = keyof typeof pathNameAndUriMap;
   type Uri = ValueOf<typeof pathNameAndUriMap>;
 
@@ -24,16 +83,16 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
    * ex) getParamNamesFromRawUri('/example/{exampleId}/{slug}') -> ['exampleId', 'slug']
    *
    * @param {Uri} rawUri
-   * @return {*}  {string[]}
+   * @return {string[]}
    */
-  const getParamNamesFromRawUri = (rawUri: Uri): string[] => {
+  const getRouteParamNamesFromRawUri = (rawUri: Uri): string[] => {
     const rawUriStr = String(rawUri);
     const paramNamesWithBrackets = rawUriStr.match(/{.+?}/g);
     if (paramNamesWithBrackets === null) return [];
 
     return paramNamesWithBrackets.map((paramNameWithBrackets) => paramNameWithBrackets.replace(/{|}/g, ''));
   };
-  type ParamNames = ReturnType<typeof getParamNamesFromRawUri>;
+  type ParamNames = ReturnType<typeof getRouteParamNamesFromRawUri>;
 
   /**
    * Validate number of parameters and parameter names
@@ -65,7 +124,7 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
    * ex) generateQueryParamsStr({ page: '1', type: 'fire' }) => 'page=1&type=fire'
    *
    * @param {Record<string, string>} paramsObj
-   * @return {*}  {string}
+   * @return {string}
    */
   const generateQueryParamsStr = (paramsObj: Record<string, string>): string => (
     new URLSearchParams(paramsObj).toString()
@@ -75,7 +134,7 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
    * Returns full path
    *
    * @param {string} path
-   * @return {*}  {string}
+   * @return {string}
    */
   const withBaseUrl = (path: string): string => `${baseUrl}${path}`;
 
@@ -101,7 +160,7 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
    *
    * @param {PathName} pathName
    * @param {PathParams} [params]
-   * @return {*}  {string}
+   * @return {string}
    */
   const getPath = (
     pathName: PathName,
@@ -110,14 +169,14 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
   ): string => {
     const rawUri = pathNameAndUriMap[pathName]; // ex) '/example/{exampleId}/{slug}'
 
-    const paramNames = getParamNamesFromRawUri(rawUri); // ex) ['exampleId', 'slug']
+    const paramNames = getRouteParamNamesFromRawUri(rawUri); // ex) ['exampleId', 'slug']
     const rawUriStr = String(rawUri); // This is just for type conversion
 
     // Return if the path doesn't contain any parameter placeholder
     if (!paramNames.length) {
       return queryParams
         ? withQueryParams(rawUriStr, queryParams)
-        : withBaseUrl(rawUriStr);
+        : rawUriStr;
     }
 
     // The path contains parameter placeholders but params doesn't provided as the 2nd argument
