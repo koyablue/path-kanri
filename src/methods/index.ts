@@ -18,12 +18,58 @@ export type PathManagerReturnType<TPathNameAndUriMap> = {
 };
 
 /**
+ * Creates a path manager for handling URL paths and parameters.
  *
+ * The pathManager function takes a mapping of path names to URI templates and an optional base URL.
+ * It returns an object with two methods, getPath and getFullPath, which are used to generate URLs
+ * with or without the base URL respectively.
  *
  * @template TPathNameAndUriMap
- * @param {TPathNameAndUriMap} pathNameAndUriMap ex) { name: '/example/{a}/{b}', ... }
- * @param {string} [baseUrl=''] ex) 'https://api.example.com'
+ *  - A mapping type where keys are path names and values are URI templates.
+ *
+ * @param {TPathNameAndUriMap} pathNameAndUriMap
+ * - An object mapping path names to URI templates.
+ * ex) { name: '/example/{a}/{b}', ... }
+ *
+ * @param {string} [baseUrl='']
+ * - An optional base URL to prepend to paths.
+ * ex) 'https://api.example.com'
+ *
  * @return {PathManagerReturnType<TPathNameAndUriMap>}
+ * - An object with getPath and getFullPath methods.
+ *
+ *
+ * Usage Example:
+ *
+ * const paths = {
+ *   example: '/example',
+ *   exampleWithParam: '/another-example/{slug}/{id}',
+ * };
+ *
+ * - Create a path manager with these paths and an optional base URL
+ * const { getPath, getFullPath } = pathManager(paths, 'https://api.example.com');
+ *
+ *
+ * - Generate a path using the 'example' path name
+ * getPath('example');
+ * Returns: '/example'
+ *
+ * getFullPath('example');
+ * Returns: 'https://api.example.com/example'
+ *
+ *
+ * - Generate a path using the 'exampleWithParam' path name and parameters
+ * getPath('exampleWithParam', {slug: 'users', id: '1'});
+ * Returns: '/another-example/users/1'
+ *
+ *
+ * - Generate a path with query parameters
+ * getPath('example', {}, {page: '1', limit: '5'});
+ * Returns: '/example/?page=1&limit=5'
+ *
+ * getFullPath('exampleWithParam', {slug: 'users', id: '1'}, {page: '1', limit: '5'});
+ * Returns 'https://api.example.com/another-example/users/1/?page=1&limit=5'
+ *
  */
 const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
   pathNameAndUriMap: TPathNameAndUriMap,
