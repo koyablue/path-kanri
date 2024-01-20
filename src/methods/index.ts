@@ -24,16 +24,16 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
    * ex) getParamNamesFromRawUri('/example/{exampleId}/{slug}') -> ['exampleId', 'slug']
    *
    * @param {Uri} rawUri
-   * @return {*}  {string[]}
+   * @return {string[]}
    */
-  const getParamNamesFromRawUri = (rawUri: Uri): string[] => {
+  const getRouteParamNamesFromRawUri = (rawUri: Uri): string[] => {
     const rawUriStr = String(rawUri);
     const paramNamesWithBrackets = rawUriStr.match(/{.+?}/g);
     if (paramNamesWithBrackets === null) return [];
 
     return paramNamesWithBrackets.map((paramNameWithBrackets) => paramNameWithBrackets.replace(/{|}/g, ''));
   };
-  type ParamNames = ReturnType<typeof getParamNamesFromRawUri>;
+  type ParamNames = ReturnType<typeof getRouteParamNamesFromRawUri>;
 
   /**
    * Validate number of parameters and parameter names
@@ -65,7 +65,7 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
    * ex) generateQueryParamsStr({ page: '1', type: 'fire' }) => 'page=1&type=fire'
    *
    * @param {Record<string, string>} paramsObj
-   * @return {*}  {string}
+   * @return {string}
    */
   const generateQueryParamsStr = (paramsObj: Record<string, string>): string => (
     new URLSearchParams(paramsObj).toString()
@@ -75,7 +75,7 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
    * Returns full path
    *
    * @param {string} path
-   * @return {*}  {string}
+   * @return {string}
    */
   const withBaseUrl = (path: string): string => `${baseUrl}${path}`;
 
@@ -101,7 +101,7 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
    *
    * @param {PathName} pathName
    * @param {PathParams} [params]
-   * @return {*}  {string}
+   * @return {string}
    */
   const getPath = (
     pathName: PathName,
@@ -110,7 +110,7 @@ const pathManager = <TPathNameAndUriMap extends { [s: string]: unknown; }>(
   ): string => {
     const rawUri = pathNameAndUriMap[pathName]; // ex) '/example/{exampleId}/{slug}'
 
-    const paramNames = getParamNamesFromRawUri(rawUri); // ex) ['exampleId', 'slug']
+    const paramNames = getRouteParamNamesFromRawUri(rawUri); // ex) ['exampleId', 'slug']
     const rawUriStr = String(rawUri); // This is just for type conversion
 
     // Return if the path doesn't contain any parameter placeholder
